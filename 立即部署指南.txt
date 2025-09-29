@@ -1,0 +1,93 @@
+🚀 立即部署到 GitHub Pages - 详细步骤
+
+📋 前提条件：
+✅ 代码已准备完毕
+✅ Git 仓库已初始化
+✅ 所有文件已提交
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 第1步：创建 GitHub 仓库
+
+1. 打开浏览器，访问：https://github.com/new
+
+2. 填写仓库信息：
+   ┌─────────────────────────────────────────────┐
+   │ Repository name: batch-image-downloader      │
+   │ Description: 现代化的网页批量图片下载工具      │
+   │ ✅ Public (必须，免费版GitHub Pages要求)        │
+   │ ❌ Add a README file (不勾选)                │
+   │ ❌ Add .gitignore (不勾选)                   │
+   │ ❌ Choose a license (不勾选)                 │
+   └─────────────────────────────────────────────┘
+
+3. 点击 "Create repository"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 第2步：推送代码
+
+在终端中执行以下命令：
+
+```bash
+cd "/Users/wming/Documents/workBox/title deed images/web-downloader"
+
+# 添加远程仓库 (替换 YOUR_USERNAME 为您的GitHub用户名)
+git remote add origin https://github.com/YOUR_USERNAME/batch-image-downloader.git
+
+# 推送代码
+git branch -M main
+git push -u origin main
+```
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 第3步：启用 GitHub Pages
+
+1. 在您的仓库页面，点击 "Settings" 选项卡
+
+2. 在左侧菜单中找到 "Pages"
+
+3. 在 "Source" 部分选择 "GitHub Actions"
+
+4. 页面会自动保存设置
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 第4步：等待自动部署
+
+1. 点击仓库的 "Actions" 选项卡
+
+2. 您会看到一个部署工作流正在运行
+
+3. 等待绿色 ✅ 显示部署成功
+
+4. 部署完成后，您的网站地址将是：
+   https://YOUR_USERNAME.github.io/batch-image-downloader/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 部署完成！
+
+访问您的网站：https://YOUR_USERNAME.github.io/batch-image-downloader/
+
+🔧 功能测试：
+1. 上传 demo-urls.txt 文件测试
+2. 在Chrome浏览器中选择下载文件夹
+3. 在其他浏览器中使用ZIP下载模式
+
+📱 分享给用户：
+- 告诉他们网站地址
+- 推荐使用Chrome 86+获得最佳体验
+- 支持拖拽上传.txt文件
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ 需要帮助？
+
+如果遇到问题，请：
+1. 检查GitHub Actions运行日志
+2. 确认仓库设置为Public
+3. 等待几分钟让DNS生效
+
+联系支持：在仓库中创建Issue反馈问题
