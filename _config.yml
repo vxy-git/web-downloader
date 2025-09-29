@@ -1,0 +1,51 @@
+# GitHub Pages 配置
+title: "批量图片下载器"
+description: "现代化的网页批量图片下载工具，支持选择本地文件夹直接下载"
+url: ""  # 将在部署时自动设置
+baseurl: ""  # 将在部署时自动设置
+
+# 主题设置
+theme: minima
+
+# 排除文件
+exclude:
+  - nginx.conf
+  - docker-compose.yml
+  - server-config.md
+  - 启动服务器.bat
+  - 启动服务器.sh
+  - "*.md"
+  - README.md
+
+# 包含文件
+include:
+  - .htaccess
+
+# Markdown 设置
+markdown: kramdown
+highlighter: rouge
+
+# 插件
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# SEO 设置
+lang: zh-CN
+author: "批量下载器开发团队"
+twitter:
+  username: ""
+facebook:
+  app_id: ""
+  publisher: ""
+
+# 社交链接
+github_username: ""
+
+# Google Analytics (可选)
+google_analytics: ""
+
+# 安全设置
+safe: true
+incremental: false

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>批量图片下载器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🖼️ 批量图片下载器</h1>
+            <p class="subtitle">上传URL列表，一键下载到指定文件夹</p>
+        </header>
+
+        <main>
+            <!-- 文件上传区域 -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📁</div>
+                        <h3>上传URL文件</h3>
+                        <p>拖拽.txt文件到这里，或点击选择文件</p>
+                        <input type="file" id="fileInput" accept=".txt" hidden>
+                        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                            选择文件
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 手动输入区域 -->
+                <div class="manual-input">
+                    <h4>或者手动粘贴URL（每行一个）：</h4>
+                    <textarea id="urlTextarea" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg&#10;..."></textarea>
+                </div>
+            </section>
+
+            <!-- URL预览和配置区域 -->
+            <section class="config-section" id="configSection" style="display: none;">
+                <div class="url-preview">
+                    <h3>📋 URL列表预览</h3>
+                    <div class="stats">
+                        <span id="urlCount">0</span> 个URL待下载
+                    </div>
+                    <div class="url-list" id="urlList">
+                        <!-- URL列表将在这里显示 -->
+                    </div>
+                </div>
+
+                <div class="download-config">
+                    <h3>⚙️ 下载配置</h3>
+                    <div class="config-item">
+                        <label for="maxConcurrent">最大并发数：</label>
+                        <input type="number" id="maxConcurrent" value="5" min="1" max="20">
+                        <small>推荐5-10个，过多可能被服务器限制</small>
+                    </div>
+
+                    <div class="config-item">
+                        <label for="retryCount">失败重试次数：</label>
+                        <input type="number" id="retryCount" value="3" min="0" max="10">
+                    </div>
+
+                    <div class="config-item">
+                        <label for="delay">请求间隔（毫秒）：</label>
+                        <input type="number" id="delay" value="200" min="0" max="5000">
+                        <small>避免请求过于频繁</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 下载控制区域 -->
+            <section class="download-section" id="downloadSection" style="display: none;">
+                <div class="download-controls">
+                    <button class="btn btn-success btn-large" id="selectFolderBtn">
+                        📂 选择下载文件夹
+                    </button>
+                    <button class="btn btn-primary btn-large" id="startDownloadBtn" disabled>
+                        🚀 开始下载
+                    </button>
+                    <button class="btn btn-secondary" id="pauseBtn" disabled>
+                        ⏸️ 暂停
+                    </button>
+                    <button class="btn btn-warning" id="stopBtn" disabled>
+                        ⏹️ 停止
+                    </button>
+                </div>
+
+                <div class="folder-info" id="folderInfo" style="display: none;">
+                    <p>📁 下载文件夹：<span id="folderName"></span></p>
+                </div>
+            </section>
+
+            <!-- 进度显示区域 -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-header">
+                    <h3>📊 下载进度</h3>
+                    <div class="progress-stats">
+                        <span>总计: <span id="totalFiles">0</span></span>
+                        <span>成功: <span id="successCount">0</span></span>
+                        <span>失败: <span id="failedCount">0</span></span>
+                        <span>进行中: <span id="activeCount">0</span></span>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+
+                <div class="speed-info">
+                    <span>下载速度: <span id="downloadSpeed">0</span> 文件/分钟</span>
+                    <span>预计剩余: <span id="estimatedTime">--</span></span>
+                </div>
+
+                <div class="log-container">
+                    <h4>📜 下载日志</h4>
+                    <div class="log-content" id="logContent">
+                        <!-- 下载日志将在这里显示 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 结果统计区域 -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-summary">
+                    <h3>📈 下载完成统计</h3>
+                    <div class="result-stats">
+                        <div class="stat-item success">
+                            <span class="stat-number" id="finalSuccessCount">0</span>
+                            <span class="stat-label">成功下载</span>
+                        </div>
+                        <div class="stat-item failed">
+                            <span class="stat-number" id="finalFailedCount">0</span>
+                            <span class="stat-label">下载失败</span>
+                        </div>
+                        <div class="stat-item total">
+                            <span class="stat-number" id="finalTotalTime">0</span>
+                            <span class="stat-label">总耗时(分钟)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="failed-urls" id="failedUrlsSection" style="display: none;">
+                    <h4>❌ 失败的URL列表</h4>
+                    <textarea id="failedUrls" readonly></textarea>
+                    <button class="btn btn-secondary" onclick="downloadFailedUrls()">
+                        💾 下载失败URL列表
+                    </button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="resetApp()">
+                        🔄 重新开始
+                    </button>
+                    <button class="btn btn-success" onclick="openDownloadFolder()">
+                        📂 打开下载文件夹
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- 浏览器兼容性提示 -->
+        <div class="compatibility-notice" id="compatibilityNotice" style="display: none;">
+            <div class="notice-content">
+                <h4>⚠️ 浏览器兼容性提示</h4>
+                <p>您的浏览器不支持 File System Access API，将使用兼容模式：</p>
+                <ul>
+                    <li>文件将打包为ZIP格式下载</li>
+                    <li>下载完成后需要手动解压</li>
+                    <li>推荐使用Chrome 86+获得最佳体验</li>
+                </ul>
+                <button class="btn btn-primary" onclick="hideCompatibilityNotice()">
+                    我知道了
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
